@@ -7,5 +7,5 @@ KAFKA_TOPIC=cpu-usage
 
 $KAFKA_HOME/kafka-topics.sh -topic ${KAFKA_TOPIC} -create --bootstrap-server localhost:9093
 echo "sending data ..."
-tail -n +2 $PATH_OF_DATA | $KAFKA_HOME/kafka-console-producer.sh --topic test --bootstrap-server localhost:9093
+tail -n +2 $PATH_OF_DATA | $KAFKA_HOME/kafka-console-producer.sh --topic $KAFKA_TOPIC --bootstrap-server localhost:9093
 echo "finished"
