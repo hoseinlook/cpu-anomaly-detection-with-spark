@@ -9,8 +9,11 @@ we read data from a kafka topic, and then
 we calculate mean and stddev of every window with spark then 
 write spark streaming results to the console and in another kafka topic.
 
-windows are slots of time every 500 millisecond's . 
-and our spark's output mode  is "update mode" 
+windows are slots of time every 500 millisecond's 
+and our spark's output mode  is "update mode".
+
+two  variables NORMAL_MEAN , NORMAL_STDDEV are mean of all data and standard deviation of all data in 
+.env file you can change it.
 
 
 # Install
