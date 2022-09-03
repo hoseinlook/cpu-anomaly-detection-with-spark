@@ -55,7 +55,7 @@ class Pipeline(ABC):
         self._spark = builder.getOrCreate()
         return self._spark
 
-    def extract_from_kafka(self) -> DataFrame:
+    def read_from_kafka(self) -> DataFrame:
         df = self.spark.readStream.format('kafka').options(**self.kafka_read_configs).load()
         df = df.withColumn("data", split(col("value").cast("string"), ','))
         df = df.select(col('key').cast("string").alias("_key"), (df.data[0] / 1000).cast("timestamp").alias("timestamp"), df.data[1].alias("cpu"))
@@ -65,7 +65,7 @@ class Pipeline(ABC):
     def transform(self, df: DataFrame) -> DataFrame:
         pass
 
-    def load_to_kafka(self, df: DataFrame):
+    def write_to_kafka(self, df: DataFrame):
         df = df.withColumnRenamed("_key", "key")
         df = df.withColumn("value", to_json(struct('*').dropFields("key")))
         df.writeStream.format('kafka').outputMode("update").options(**self.kafka_write_configs).start()
@@ -78,8 +78,8 @@ class Pipeline(ABC):
         pass
 
     def start(self):
-        df = self.transform(self.extract_from_kafka())
-        self.load_to_kafka(df)
+        df = self.transform(self.read_from_kafka())
+        self.write_to_kafka(df)
         self.write_to_console(df)
         self.wait()
 
