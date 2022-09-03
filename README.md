@@ -15,6 +15,11 @@ and our spark's output mode  is "update mode".
 two  variables NORMAL_MEAN , NORMAL_STDDEV are mean of all data and standard deviation of all data in 
 .env file you can change it.
 
+jar files will be cached in storage directory when you start spark_application with docker.
+
+just errors and warnings will be  printed in console.
+but all statuses will be in kafka.
+
 
 # Install
 
