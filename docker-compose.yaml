@@ -50,4 +50,24 @@ services:
 
   #--------------------------------------------------------------------------
   # Spark
+  spark_application:
+    build: .
+    volumes:
+      - ./storage/checkpoint:/code/storage/checkpoint
+      - ./storage/jars:/root/.ivy2
+      - ./.env:/code/.env
+    command: [ "python" , "-m" , "pipeline"  ]
+    ports:
+      - "4040:4040"
+    depends_on:
+      - kafka-broker
+    networks:
+      - pipeline
 
+  kafka_producer:
+    image: bitnami/kafka:latest
+    command: [ "echo" , "done" ]
+    depends_on:
+      - kafka-broker
+    networks:
+      - pipeline

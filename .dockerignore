@@ -1,0 +1,7 @@
+storage/kafka_data/
+storage/zookeeper_data/
+.idea
+.ipynb_checkpoints
+venv
+.DS_Store
+.env
