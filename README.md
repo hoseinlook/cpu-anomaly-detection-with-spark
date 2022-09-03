@@ -28,10 +28,7 @@ git clone https://github.com/hoseinlook/cpu-anomaly-detection-with-spark.git
 cp -n .env.example .env
 nano .env
 
-python3.8 -m venv venv
-source venv/bin/activate
-pip install -U pip
-pip install -r requirements.txt
+
 
 ```
 
@@ -46,14 +43,28 @@ at first provide infrastructure like kafka and zookeeper with docker
 docker-compose up
 ```
 
-+ kafka bootstrap host: [ localhost:9093 ]( localhost:9093 )
++ kafka bootstrap host (EXTERNAL listener): [ localhost:9093 ]( localhost:9093 )
 + zookeeper server: [ localhost:2181 ]( localhost:2181 )
 
-##### start pipeline:
+#### Note:
+watch spark outputs in docker-compose logs
+```bash
+docker-compose logs -f spark_application
+```
+also you can see output in kafka topic (anomaly)
+[ bootstrap server ]( localhost:9093 )
+
+##### start pipeline without docker:
 
 now start pyspark pipeline
-
+if you want to run spark in your local machine without docker you should set
+KAFKA_SERVERS=localhost:9093 (EXTERNAL kafka listener) in .env file
 ```bash
+python3.8 -m venv venv
+source venv/bin/activate
+pip install -U pip
+pip install -r requirements.txt
+
 source venv/bin/activate
 python -m pipeline
 ```
@@ -68,4 +79,5 @@ bash send-data-to-kafka.sh
 ####  Note:
 
 you can watch checkpoint's and data of kafka and data of zookeeper in storage directory
+
 
